@@ -58,7 +58,7 @@ export default class TodoFooter extends React.Component {
 			caption = (caption + "").split(",");
 			caption.map((tag) => this.tmpTagArray.push(tag))
 
-			var uniqEs6 = (arrArg) => {
+			var uniq = (arrArg) => {
   				return arrArg.filter((elem, pos, arr) => {
     			return arr.indexOf(elem) == pos;
   				});
@@ -68,13 +68,13 @@ export default class TodoFooter extends React.Component {
 				caption.map((tag) => this.tmpTagArray.push(tag))
 			}
 
-			// this.tmpTagArray = uniqEs6(this.tmpTagArray);
+			// this.tmpTagArray = uniq(this.tmpTagArray);
 			// console.log("unique " + this.tmpTagArray);
 			return (
 
 				<li key={Date.now() + caption}>
 				{
-					Array.isArray(caption) === true ? this.tmpTagArray.map((caption) => 
+					Array.isArray(caption) === true ? caption.map((caption) => 
 					<a key={Date.now() + caption} href={"#/" + url + "/" + caption } 
 					className={filterName ===  this.props.viewStore.todoFilter ? "selected" : ""}>
 					{caption != "false" ? caption : ""}
