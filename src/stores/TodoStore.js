@@ -20,25 +20,22 @@ export default class TodoStore {
 	}
 
 	@computed get allTodoTags() {
-		this.todos.map((todo) => this.allTags.push(todo));
-		console.log(this.uniqEs6(this.allTags));
-		return this.uniqEs6(this.allTags);
+
+		this.todos.map((todo) => (todo.tag + "").split(",").map((tag) => this.allTags.push(tag)));
+		return this.uniq(this.allTags);
 	}
 
 	@computed get filteredTodos() {
-		if(this.filter === "")
-		{
-			// console.log("no filters set");
+		if(this.filter === ""){
 			return this.todos;
-		}
-		else{
-			// console.log(this.filter);
+		}else{
 			var resultToDos = new RegExp(this.filter, "i");
 			return this.todos.filter(todo => !this.filter || resultToDos.test(todo.tag));
 		}
 	}
 
-	uniqEs6 = (arrArg) => {
+//  remove duplicates from the array
+	uniq = (arrArg) => {
   				return arrArg.filter((elem, pos, arr) => {
     			return arr.indexOf(elem) == pos;
   				});

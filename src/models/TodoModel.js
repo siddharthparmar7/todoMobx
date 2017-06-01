@@ -23,6 +23,8 @@ export default class TodoModel {
 	}
 
 	destroy() {
+		// this.tag.map((tag) => this.tag.remove(tag));
+		// console.log(this.tag.length);
 		this.store.todos.remove(this);
 	}
 
@@ -33,10 +35,17 @@ export default class TodoModel {
 // edited by Sid
 	addTag(tag) {
 		var tags = [];
-		tags = tag.split(",").map((word) => word.trim()  );
-		console.log("total tags " + tags.length);
-		this.tag = tags;
-		}
+		tags = tag.split(",").map((word) => word.trim());
+		tags = this.uniq(tags);
+		this.tag = tags;		
+	}
+
+	//  remove duplicates from the array
+	uniq = (arrArg) => {
+  				return arrArg.filter((elem, pos, arr) => {
+    			return arr.indexOf(elem) == pos;
+  				});
+			}
 
 	toJS() {
 		return {

@@ -75,20 +75,17 @@ export default class TodoItem extends React.Component {
 			this.handleDestroy();
 		}
 		// edited by Sid
-		if(tagVal){
+		if(tagVal != "false"){
 			this.props.todo.addTag(tagVal);
 			this.editTag = tagVal;
-		}
-		else{
-			this.editTag = "Add Tag";
-		}
-		
+		}		
 		this.props.viewStore.todoBeingEdited = null;
 	};
 
 	handleDestroy = () => {
 		this.props.todo.destroy();
 		this.props.viewStore.todoBeingEdited = null;
+		this.props.allTodoTags;
 	};
 
 	handleEdit = () => {
@@ -101,7 +98,11 @@ export default class TodoItem extends React.Component {
 	handleKeyDown = (event) => {
 		if (event.which === ESCAPE_KEY) {
 			this.editText = this.props.todo.title;
-			this.editTag = this.props.todo.tag.join(",");
+			if(this.props.todo.tag == ""){
+				this.editTag = "";
+			}else{
+				this.editTag = this.props.todo.tag.join(",");
+			}
 			this.props.viewStore.todoBeingEdited = null;
 		} else if (event.which === ENTER_KEY) {
 			this.handleSubmit(event);
