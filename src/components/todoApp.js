@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 import TodoEntry from './todoEntry';
 import TodoOverview from './todoOverview';
 import TodoFooter from './todoFooter';
-import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from '../constants';
+import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS, FILTERING } from '../constants';
 
 import DevTool from 'mobx-react-devtools';
 
@@ -30,10 +30,16 @@ export default class TodoApp extends React.Component {
 		if (__CLIENT__) {
 			var { Router } = require('director/build/director');
 			var viewStore = this.props.viewStore;
+			var todoStore = this.props.todoStore;
 			var router = Router({
 				'/': function() { viewStore.todoFilter = ALL_TODOS; },
 				'/active': function() { viewStore.todoFilter = ACTIVE_TODOS; },
-				'/completed': function() { viewStore.todoFilter = COMPLETED_TODOS; }
+				'/completed': function() { viewStore.todoFilter = COMPLETED_TODOS; },
+				'/filtering/:filterKey': function(filterKey) { 
+					// console.log(filterKey); 
+					todoStore.filter = filterKey;
+					viewStore.todoFilter = FILTERING;
+				}
 			});
 		router.init('/');
 		}

@@ -2,9 +2,11 @@ import {observable, computed, reaction} from 'mobx';
 import TodoModel from '../models/TodoModel'
 import * as Utils from '../utils';
 
-
 export default class TodoStore {
 	@observable todos = [];
+	allTags = [];
+	@observable filter = "";
+	@observable filtering = false;
 
 	@computed get activeTodoCount() {
 		return this.todos.reduce(
@@ -16,6 +18,31 @@ export default class TodoStore {
 	@computed get completedCount() {
 		return this.todos.length - this.activeTodoCount;
 	}
+
+	@computed get allTodoTags() {
+		this.todos.map((todo) => this.allTags.push(todo));
+		console.log(this.uniqEs6(this.allTags));
+		return this.uniqEs6(this.allTags);
+	}
+
+	@computed get filteredTodos() {
+		if(this.filter === "")
+		{
+			// console.log("no filters set");
+			return this.todos;
+		}
+		else{
+			// console.log(this.filter);
+			var resultToDos = new RegExp(this.filter, "i");
+			return this.todos.filter(todo => !this.filter || resultToDos.test(todo.tag));
+		}
+	}
+
+	uniqEs6 = (arrArg) => {
+  				return arrArg.filter((elem, pos, arr) => {
+    			return arr.indexOf(elem) == pos;
+  				});
+			}
 
 	subscribeServerToStore() {
 		reaction(
@@ -51,6 +78,12 @@ export default class TodoStore {
 		);
 	}
 
+	// edited by Sid
+	addTag (tag) {
+		this.todos.tag = tag;
+		this.allTags.push(tag);
+	}
+
 	toJS() {
 		return this.todos.map(todo => todo.toJS());
 	}
@@ -61,3 +94,4 @@ export default class TodoStore {
 		return todoStore;
 	}
 }
+
